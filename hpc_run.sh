@@ -101,8 +101,14 @@ CMD="$application $options"
 
 #! ========================================================
 
-SCENEDIR=/rds/project/rds-JDeuXlFW9KE/mvsnerf-main/dataset/dtu_sfm/scan1_train
+# SCENEDIR=/rds/project/rds-JDeuXlFW9KE/mvsnerf-main/dataset/dtu_sfm/scan1_train
+SCENEDIR=/rds/project/rds-qxpdOeYWi78/plenoxels/data/real
 
-python imgs2poses.py --scenedir SCENEDIR --downscale 1
 
-# sbatch hpc_run.sh
+SCENES=(floss floss3 specular)
+
+SCENE=${SCENES[$SLURM_ARRAY_TASK_ID]}
+
+python imgs2poses.py --scenedir $SCENEDIR/$SCENE --downscale 1
+
+# sbatch --array=0- hpc_run.sh
